@@ -34,7 +34,6 @@ function startChangeColor() {
   stopBtn.style.border = '1px solid black';
   stopBtn.style.borderRadius = '2px';
   stopBtn.style.boxShadow = '0 5px 10px grey';
-  console.log(intervId);
 }
 
 function bodyColor() {

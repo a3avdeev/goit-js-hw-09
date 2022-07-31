@@ -9,55 +9,86 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     console.log(selectedDates[0]);
+    if (selectedDates[0] < Date.now()) {
+      Notiflix.Notify.failure('Please choose a date in the future');
+    }
   },
 };
 
+const timerValues = document.querySelector('.timer');
+const timerField = document.querySelectorAll('.field');
+const timerLabel = document.querySelectorAll('.label');
+const timerValue = document.querySelectorAll('.value');
+const startBtn = document.querySelector('[data-start]');
 const dateInput = document.querySelector('#datetime-picker');
-const finalDate = flatpickr('#datetime-picker', options);
-console.log(dateInput);
-console.log(finalDate.now);
-
-// function convertMs(ms) {
-//   const second = 1000;
-//   const minute = second * 60;
-//   const hour = minute * 60;
-//   const day = hour * 24;
-
-//   const days = Math.floor(ms / day);
-//   const hours = Math.floor((ms % day) / hour);
-//   const minutes = Math.floor(((ms % day) % hour) / minute);
-//   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
-
-//   return { days, hours, minutes, seconds };
-// }
-
-// console.log(convertMs(2000));
-// console.log(convertMs(140000));
-// console.log(convertMs(24140000));
-
-// // 1) Потрібно задати дедлайн
-// // 2) Потрібно задати поточну дату
-// // 3) Потрібно знайти їх різницю
-// // 4) Різницю конвертувати в нормальний формат для користувача
-// // 5) Відобразити це все на екрані
-
-const deadline = new Date(2022, 9, 27);
 const daysElement = document.querySelector('[data-days]');
 const hoursElement = document.querySelector('[data-hours]');
 const minutesElement = document.querySelector('[data-minutes]');
 const secondsElement = document.querySelector('[data-seconds]');
-function timer() {
-  const today = new Date();
-  const delta = deadline - today;
-  const seconds = Math.floor(delta / 1000) % 60;
-  const minutes = Math.floor(delta / 1000 / 60) % 60;
-  const hours = Math.floor(delta / 1000 / 60 / 60) % 24;
-  const days = Math.floor(delta / 1000 / 60 / 60 / 24);
 
-  daysElement.textContent = days < 10 ? `0${days}` : days;
-  hoursElement.textContent = hours < 10 ? `0${hours}` : hours;
-  minutesElement.textContent = minutes < 10 ? `0${minutes}` : minutes;
-  secondsElement.textContent = seconds < 10 ? `0${seconds}` : seconds;
+const deadLine = flatpickr(dateInput, options);
+console.log('Current date', Date());
+
+startBtn.setAttribute('disabled', 'disabled');
+startBtn.addEventListener('click', startTimerClick);
+dateInput.addEventListener('input', datePickerClick);
+
+timerValues.style.display = 'flex';
+timerValues.style.flexDirection = 'row';
+timerValues.style.justifyContent = 'start';
+timerValues.style.marginTop = '15px';
+timerField.forEach(el => {
+  el.style.display = 'flex';
+});
+timerField.forEach(el => {
+  el.style.flexDirection = 'column';
+});
+timerField.forEach(el => {
+  el.style.alignItems = 'center';
+});
+timerField.forEach(el => {
+  el.style.marginRight = '15px';
+});
+timerLabel.forEach(el => {
+  el.style.fontSize = '15px';
+});
+timerValue.forEach(el => {
+  el.style.fontSize = '30px';
+});
+
+function datePickerClick() {
+  if (deadLine.selectedDates[0] > Date.now()) {
+    startBtn.removeAttribute('disabled', 'disabled');
+  }
 }
 
-setInterval(timer, 1000);
+function startTimerClick() {
+  delta = convertMs(deadLine.selectedDates[0] - Date.now());
+  startBtn.setAttribute('disabled', 'disabled');
+  dateInput.setAttribute('disabled', 'disabled');
+  daysElement.textContent = delta.days;
+  hoursElement.textContent = delta.hours;
+  minutesElement.textContent = delta.minutes;
+  secondsElement.textContent = delta.seconds;
+  setInterval(startTimerClick, 1000);
+}
+
+function convertMs(ms) {
+  const second = 1000;
+  const minute = second * 60;
+  const hour = minute * 60;
+  const day = hour * 24;
+
+  const days = addLeadingZero(Math.floor(ms / day));
+  const hours = addLeadingZero(Math.floor((ms % day) / hour));
+  const minutes = addLeadingZero(Math.floor(((ms % day) % hour) / minute));
+  const seconds = addLeadingZero(
+    Math.floor((((ms % day) % hour) % minute) / second)
+  );
+
+  return { days, hours, minutes, seconds };
+}
+
+function addLeadingZero(value) {
+  return String(value).padStart(2, '0');
+}
