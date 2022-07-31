@@ -5,9 +5,7 @@ const startBtn = document.querySelector('[data-start]');
 const stopBtn = document.querySelector('[data-stop]');
 const body = document.querySelector('body');
 
-function bodyColor() {
-  body.style.backgroundColor = getRandomHexColor();
-}
+let intervId = null;
 
 startBtn.style.width = '50px';
 startBtn.style.height = '30px';
@@ -36,6 +34,11 @@ function startChangeColor() {
   stopBtn.style.border = '1px solid black';
   stopBtn.style.borderRadius = '2px';
   stopBtn.style.boxShadow = '0 5px 10px grey';
+  console.log(intervId);
+}
+
+function bodyColor() {
+  body.style.backgroundColor = getRandomHexColor();
 }
 
 function stopChangeColor() {
