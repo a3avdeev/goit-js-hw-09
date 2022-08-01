@@ -2,6 +2,27 @@ import Notiflix from 'notiflix';
 
 const form = document.querySelector('form');
 const input = document.querySelectorAll('input');
+const submit = document.querySelector('button');
+
+form.style.display = 'flex';
+form.style.flexDirection = 'row';
+form.style.flexWrap = 'wrap';
+form.style.alignItems = 'flex-end';
+submit.style.height = '22px';
+submit.style.marginTop = '10px';
+
+input.forEach(el => {
+  el.style.display = 'flex';
+});
+input.forEach(el => {
+  el.style.flexDirection = 'column';
+});
+input.forEach(el => {
+  el.style.alignItems = 'start';
+});
+input.forEach(el => {
+  el.style.marginRight = '10px';
+});
 
 form.addEventListener('submit', submitClick);
 
