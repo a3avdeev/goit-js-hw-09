@@ -50,7 +50,6 @@ function submitClick(event) {
   console.log(input[2].value);
 
   for (let i = 1; i <= amount; i += 1) {
-    delay += step;
     createPromise(i, delay)
       .then(({ position, delay }) => {
         Notiflix.Notify.success(
@@ -62,5 +61,6 @@ function submitClick(event) {
           `❌ Rejected promise ${position} in ${delay}ms`
         );
       });
+    delay += step;
   }
 }
