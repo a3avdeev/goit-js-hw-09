@@ -29,6 +29,8 @@ const secondsElement = document.querySelector('[data-seconds]');
 const deadLine = flatpickr(dateInput, options);
 console.log('Current date', Date());
 
+let delta = 0;
+
 startBtn.setAttribute('disabled', 'disabled');
 startBtn.addEventListener('click', startTimerClick);
 dateInput.addEventListener('input', datePickerClick);
@@ -85,7 +87,6 @@ function convertMs(ms) {
   const seconds = addLeadingZero(
     Math.floor((((ms % day) % hour) % minute) / second)
   );
-
   return { days, hours, minutes, seconds };
 }
 
