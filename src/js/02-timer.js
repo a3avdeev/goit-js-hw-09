@@ -30,6 +30,7 @@ const deadLine = flatpickr(dateInput, options);
 console.log('Current date', Date());
 
 let intervId = null;
+let delta = 0;
 
 startBtn.setAttribute('disabled', 'disabled');
 startBtn.addEventListener('click', startTimerClick);
