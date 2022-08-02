@@ -77,7 +77,6 @@ function startTimerClick() {
     intervId = setInterval(startTimerClick, 1000);
   } else {
     clearInterval(intervId);
-    startBtn.removeAttribute('disabled', 'disabled');
     dateInput.removeAttribute('disabled', 'disabled');
   }
 }
