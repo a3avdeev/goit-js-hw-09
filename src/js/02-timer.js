@@ -29,7 +29,7 @@ const secondsElement = document.querySelector('[data-seconds]');
 const deadLine = flatpickr(dateInput, options);
 console.log('Current date', Date());
 
-let delta = 0;
+let intervId = null;
 
 startBtn.setAttribute('disabled', 'disabled');
 startBtn.addEventListener('click', startTimerClick);
@@ -65,14 +65,20 @@ function datePickerClick() {
 }
 
 function startTimerClick() {
-  delta = convertMs(deadLine.selectedDates[0] - Date.now());
-  startBtn.setAttribute('disabled', 'disabled');
-  dateInput.setAttribute('disabled', 'disabled');
-  daysElement.textContent = delta.days;
-  hoursElement.textContent = delta.hours;
-  minutesElement.textContent = delta.minutes;
-  secondsElement.textContent = delta.seconds;
-  setInterval(startTimerClick, 1000);
+  if (deadLine.selectedDates[0] > Date.now()) {
+    delta = convertMs(deadLine.selectedDates[0] - Date.now());
+    startBtn.setAttribute('disabled', 'disabled');
+    dateInput.setAttribute('disabled', 'disabled');
+    daysElement.textContent = delta.days;
+    hoursElement.textContent = delta.hours;
+    minutesElement.textContent = delta.minutes;
+    secondsElement.textContent = delta.seconds;
+    intervId = setInterval(startTimerClick, 1000);
+  } else {
+    clearInterval(intervId);
+    startBtn.removeAttribute('disabled', 'disabled');
+    dateInput.removeAttribute('disabled', 'disabled');
+  }
 }
 
 function convertMs(ms) {
